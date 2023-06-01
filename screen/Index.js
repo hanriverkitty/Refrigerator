@@ -10,11 +10,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { styles } from "../style";
+import { styles, Background } from "../style";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Background = require("../assets/png/페이지/background.png");
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
