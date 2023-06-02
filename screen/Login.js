@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,36 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ToastAndroid,
 } from "react-native";
-import { styles, Background } from "../style";
+import { Background } from "../style";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 
 function Login({ navigation }) {
+  const [nickname, setNickname] = useState("");
+  const onChangeId = (id) => setId(id);
+  const onChangePassword = (pass) => setPass(pass);
+  const [id, setId] = useState("");
+  const [pass, setPass] = useState("");
+  const log_response = async () => {
+    try {
+      const response = await axios.post(
+        "http://3.104.80.58:8080/api/v1/user/login",
+        {
+          id: id,
+          pw: pass,
+        }
+      );
+
+      const nick = response.data.name;
+      navigation.navigate("Main", { nickname: nick });
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show("사용자 정보가 맞지 않습니다!", ToastAndroid.SHORT);
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: "#6cc7a9" }}>
@@ -40,10 +64,8 @@ function Login({ navigation }) {
             <TextInput
               style={{ fontSize: 20, padding: 10 }}
               placeholder="아이디"
-              selectionColor={"#6cc7a9"}
-              textAlign="left"
-              placeholderTextColor={"#b4b4b4"}
-              underlineColorAndroid={"#b4b4b4"}
+              {...styles.input_st}
+              onChangeText={onChangeId}
             ></TextInput>
             <FontAwesome
               name="user"
@@ -56,10 +78,8 @@ function Login({ navigation }) {
             <TextInput
               style={{ fontSize: 20, padding: 10 }}
               placeholder="비밀번호"
-              selectionColor={"#6cc7a9"}
-              textAlign="left"
-              placeholderTextColor={"#b4b4b4"}
-              underlineColorAndroid={"#b4b4b4"}
+              {...styles.input_st}
+              onChangeText={onChangePassword}
               secureTextEntry={true}
             ></TextInput>
             <FontAwesome
@@ -79,7 +99,7 @@ function Login({ navigation }) {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("Main")}
+            onPress={log_response}
             style={{
               width: "80%",
               paddingVertical: 15,
@@ -116,7 +136,7 @@ function Login({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ marginLeft: "23%" }}
-            onPress={() => navigation.navigate("Singin")}
+            onPress={() => navigation.navigate("Signin")}
           >
             <Text style={{ color: "black", fontSize: 15 }}>회원가입</Text>
           </TouchableOpacity>
@@ -145,15 +165,15 @@ function Login({ navigation }) {
           >
             <Image
               source={require("../assets/kakao.png")}
-              style={{ width: 60, height: 60, marginLeft: "40%" }}
+              style={{ ...styles.icon_st, marginLeft: "40%" }}
             />
             <Image
               source={require("../assets/naver.png")}
-              style={{ width: 60, height: 60, marginLeft: "10%" }}
+              style={styles.icon_st}
             />
             <Image
               source={require("../assets/google.png")}
-              style={{ width: 60, height: 60, marginLeft: "10%" }}
+              style={styles.icon_st}
             />
           </View>
         </View>
@@ -163,3 +183,16 @@ function Login({ navigation }) {
 }
 
 export default Login;
+const styles = StyleSheet.create({
+  input_st: {
+    selectionColor: "#6cc7a9",
+    textAlign: "left",
+    placeholderTextColor: "#b4b4b4",
+    underlineColorAndroid: "#b4b4b4",
+  },
+  icon_st: {
+    width: 60,
+    height: 60,
+    marginLeft: "10%",
+  },
+});
