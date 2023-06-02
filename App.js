@@ -6,6 +6,7 @@ import Login from "./screen/Login";
 import Index from "./screen/Index";
 import Signin from "./screen/Signin";
 import Main from "./screen/Main";
+import Recipe from "./screen/Recipe";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Recipe" component={Recipe} />
       </Stack.Navigator>
     </NavigationContainer>
   );
