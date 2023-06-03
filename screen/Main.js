@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,10 +16,27 @@ import { styles, Background } from "../style";
 import { FontAwesome, Entypo, Fontisto } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
+import axios from "axios";
+import { ImgPath } from "./Img";
 
 function Main({ route, navigation }) {
   const nickname = route.params.nickname;
-  console.log(nickname);
+  const [data, setData] = useState({});
+  const load_ingredient = async () => {
+    try {
+      const response = await axios.get(
+        "http://3.104.80.58:8080/api/v1/ingredient"
+      );
+      console.log(response.data);
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
+    }
+  };
+  useEffect(() => {
+    load_ingredient();
+  }, []);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground source={Background} style={styles.background}>
@@ -73,8 +90,8 @@ function Main({ route, navigation }) {
         <View style={{ flex: 20, width: "100%", paddingTop: 30 }}>
           <FlatList
             style={{ height: "80%", paddingBottom: 10 }}
-            data={DATA}
-            renderItem={({ item }) => <Item title={item.title} />}
+            data={data}
+            renderItem={({ item }) => <Item item={item} ingre={item.name} />}
             keyExtractor={(item) => item.id}
             numColumns={3}
             columnWrapperStyle={{
@@ -110,74 +127,74 @@ function Main({ route, navigation }) {
 
 export default Main;
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-  {
-    id: "bd7acbea-c1b1-46c2-aved5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c6a05-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-zbd96-145571e29d72",
-    title: "Third Item",
-  },
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28zba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97zf63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145z571e29d72",
-    title: "Third Item",
-  },
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3cad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-xfbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571ez29d72",
-    title: "Third Item",
-  },
-  {
-    id: "58694a10f-3da1-471f-bd96-145z571e29d72",
-    title: "Third Item",
-  },
-  {
-    id: "bd7acbe4a-c1b1-46c2-aed5-3cad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68af3c-c605-48d3-a4f8-xfbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "586942a0f-3da1-471f-bd96-145571ez29d72",
-    title: "Third Item",
-  },
-];
+// const DATA = [
+//   {
+//     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+//     title: "First Item",
+//   },
+//   {
+//     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+//     title: "Second Item",
+//   },
+//   {
+//     id: "58694a0f-3da1-471f-bd96-145571e29d72",
+//     title: "Third Item",
+//   },
+//   {
+//     id: "bd7acbea-c1b1-46c2-aved5-3ad53abb28ba",
+//     title: "First Item",
+//   },
+//   {
+//     id: "3ac68afc-c6a05-48d3-a4f8-fbd91aa97f63",
+//     title: "Second Item",
+//   },
+//   {
+//     id: "58694a0f-3da1-471f-zbd96-145571e29d72",
+//     title: "Third Item",
+//   },
+//   {
+//     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28zba",
+//     title: "First Item",
+//   },
+//   {
+//     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97zf63",
+//     title: "Second Item",
+//   },
+//   {
+//     id: "58694a0f-3da1-471f-bd96-145z571e29d72",
+//     title: "Third Item",
+//   },
+//   {
+//     id: "bd7acbea-c1b1-46c2-aed5-3cad53abb28ba",
+//     title: "First Item",
+//   },
+//   {
+//     id: "3ac68afc-c605-48d3-a4f8-xfbd91aa97f63",
+//     title: "Second Item",
+//   },
+//   {
+//     id: "58694a0f-3da1-471f-bd96-145571ez29d72",
+//     title: "Third Item",
+//   },
+//   {
+//     id: "58694a10f-3da1-471f-bd96-145z571e29d72",
+//     title: "Third Item",
+//   },
+//   {
+//     id: "bd7acbe4a-c1b1-46c2-aed5-3cad53abb28ba",
+//     title: "First Item",
+//   },
+//   {
+//     id: "3ac68af3c-c605-48d3-a4f8-xfbd91aa97f63",
+//     title: "Second Item",
+//   },
+//   {
+//     id: "586942a0f-3da1-471f-bd96-145571ez29d72",
+//     title: "Third Item",
+//   },
+// ];
 
-const Item = ({ title }) => (
+const Item = ({ item, ingre }) => (
   <View style={{ justifyContent: "center" }}>
     <View
       style={{
@@ -189,10 +206,11 @@ const Item = ({ title }) => (
       }}
     >
       <Image
-        source={require("../assets/png/식재료/감자.png")}
-        style={{ width: 80, height: 60 }}
+        source={ImgPath[ingre]}
+        style={{ resizeMode: "contain", width: 80, height: 60 }}
       ></Image>
     </View>
+    <Text style={{ textAlign: "center", marginTop: 10 }}>{item.name}</Text>
   </View>
 );
 

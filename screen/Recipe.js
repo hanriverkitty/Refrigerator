@@ -17,9 +17,9 @@ import { FontAwesome, Entypo, Fontisto } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 
-function Main({ route, navigation }) {
-  console.log(route.params);
+function Recipe({ route, navigation }) {
   const nickname = route.params.nickname;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground source={Background} style={styles.background}>
@@ -62,12 +62,18 @@ function Main({ route, navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ paddingBottom: 30, flexDirection: "row" }}>
-          <Text style={{ color: "#0ea371", fontWeight: "bold", fontSize: 40 }}>
-            {route.params.nickname}
-          </Text>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 40 }}>
-            님의 냉장고
+        <View style={{ paddingBottom: 20, flexDirection: "row" }}>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 20,
+              textAlign: "center",
+              marginTop: 5,
+            }}
+          >
+            {route.params.nickname}님의 냉장고 속 재고를 바탕으로 {"\n"}레시피를
+            추천해드려요.
           </Text>
         </View>
         <View style={{ width: "100%", paddingTop: 30, flex: 20 }}>
@@ -103,7 +109,7 @@ function Main({ route, navigation }) {
   );
 }
 
-export default Main;
+export default Recipe;
 
 const DATA = [
   {
@@ -141,7 +147,7 @@ const DATA = [
 ];
 
 const Item = ({ title }) => (
-  <View style={{ justifyContent: "center" }}>
+  <View style={{ justifyContent: "center", alignItems: "center" }}>
     <View
       style={{
         backgroundColor: "white",
@@ -149,6 +155,8 @@ const Item = ({ title }) => (
         paddingHorizontal: 5,
         borderRadius: 10,
         elevation: 7,
+        marginBottom: 30,
+        width: "85%",
       }}
     >
       <Image
