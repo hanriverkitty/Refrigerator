@@ -6,4 +6,5 @@ export const ImgPath = {
   적양파: require("../assets/png/식재료/적양파.png"),
   토마토: require("../assets/png/식재료/토마토.png"),
   피망: require("../assets/png/식재료/피망.png"),
+  직접추가: require("../assets/png/아이콘/직접추가.png"),
 };

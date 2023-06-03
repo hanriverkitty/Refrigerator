@@ -11,6 +11,7 @@ import {
   TextInput,
   ScrollView,
   FlatList,
+  ToastAndroid,
 } from "react-native";
 import { styles, Background } from "../style";
 import { FontAwesome, Entypo, Fontisto } from "@expo/vector-icons";
@@ -21,14 +22,23 @@ import { ImgPath } from "./Img";
 
 function Main({ route, navigation }) {
   const nickname = route.params.nickname;
+  const user_id = route.params.id;
   const [data, setData] = useState({});
+  const plus = {
+    id: 999,
+    img: null,
+    ingredientName: "직접추가",
+  };
   const load_ingredient = async () => {
     try {
       const response = await axios.get(
-        "http://3.104.80.58:8080/api/v1/ingredient"
+        `http://3.104.80.58:8080/api/v1/fridge/${user_id}`
       );
       console.log(response.data);
       setData(response.data);
+      const f_data = [...response.data, plus];
+      setData(f_data);
+      console.log(f_data);
     } catch (error) {
       console.log(error);
       ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
@@ -91,7 +101,9 @@ function Main({ route, navigation }) {
           <FlatList
             style={{ height: "80%", paddingBottom: 10 }}
             data={data}
-            renderItem={({ item }) => <Item item={item} ingre={item.name} />}
+            renderItem={({ item }) => (
+              <Item item={item} ingre={item.ingredientName} />
+            )}
             keyExtractor={(item) => item.id}
             numColumns={3}
             columnWrapperStyle={{
@@ -210,7 +222,18 @@ const Item = ({ item, ingre }) => (
         style={{ resizeMode: "contain", width: 80, height: 60 }}
       ></Image>
     </View>
-    <Text style={{ textAlign: "center", marginTop: 10 }}>{item.name}</Text>
+    <Text
+      style={{
+        textAlign: "center",
+        marginTop: 10,
+        fontWeight: "bold",
+        color: "#545454",
+        fontSize: 18,
+      }}
+    >
+      {item.ingredientName} {item.quantity}
+      {item.ingredientUnitName}
+    </Text>
   </View>
 );
 

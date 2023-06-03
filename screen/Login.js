@@ -33,7 +33,7 @@ function Login({ navigation }) {
       );
 
       const nick = response.data.name;
-      navigation.navigate("Main", { nickname: nick });
+      navigation.navigate("Main", { nickname: nick, id: id });
     } catch (error) {
       console.log(error);
       ToastAndroid.show("사용자 정보가 맞지 않습니다!", ToastAndroid.SHORT);
