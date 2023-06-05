@@ -20,7 +20,46 @@ import * as NavigationBar from "expo-navigation-bar";
 import axios from "axios";
 import { ImgPath } from "./Img";
 
-function Main({ route, navigation }) {
+const Item = ({ item, ingre, onPress }) => (
+  <View style={{ justifyContent: "center" }}>
+    <TouchableOpacity onPress={onPress}>
+      <View
+        style={{
+          backgroundColor: "white",
+          paddingVertical: 15,
+          paddingHorizontal: 5,
+          borderRadius: 10,
+          elevation: 7,
+        }}
+      >
+        <Image
+          source={
+            item.ingredientName === "직접추가"
+              ? require("../assets/png/아이콘/직접추가.png")
+              : { uri: item.ingredientImg }
+          }
+          // source = {{uri:item.ingredientImg}}
+          style={{ resizeMode: "contain", width: 80, height: 60 }}
+        ></Image>
+      </View>
+    </TouchableOpacity>
+
+    <Text
+      style={{
+        textAlign: "center",
+        marginTop: 10,
+        fontWeight: "bold",
+        color: "#545454",
+        fontSize: 18,
+      }}
+    >
+      {item.ingredientName} {item.quantity}
+      {item.ingredientUnitName}
+    </Text>
+  </View>
+);
+
+function Main({ route, navigation, onPress }) {
   const nickname = route.params.nickname;
   const user_id = route.params.id;
   const [data, setData] = useState({});
@@ -102,7 +141,18 @@ function Main({ route, navigation }) {
             style={{ height: "80%", paddingBottom: 10 }}
             data={data}
             renderItem={({ item }) => (
-              <Item item={item} ingre={item.ingredientName} />
+              console.log(item),
+              (
+                <Item
+                  item={item}
+                  ingre={item.ingredientName}
+                  onPress={() => {
+                    item.ingredientName === "직접추가"
+                      ? navigation.navigate("Ingredient", { nickname, user_id })
+                      : null;
+                  }}
+                />
+              )
             )}
             keyExtractor={(item) => item.id}
             numColumns={3}
@@ -205,37 +255,6 @@ export default Main;
 //     title: "Third Item",
 //   },
 // ];
-
-const Item = ({ item, ingre }) => (
-  <View style={{ justifyContent: "center" }}>
-    <View
-      style={{
-        backgroundColor: "white",
-        paddingVertical: 15,
-        paddingHorizontal: 5,
-        borderRadius: 10,
-        elevation: 7,
-      }}
-    >
-      <Image
-        source={ImgPath[ingre]}
-        style={{ resizeMode: "contain", width: 80, height: 60 }}
-      ></Image>
-    </View>
-    <Text
-      style={{
-        textAlign: "center",
-        marginTop: 10,
-        fontWeight: "bold",
-        color: "#545454",
-        fontSize: 18,
-      }}
-    >
-      {item.ingredientName} {item.quantity}
-      {item.ingredientUnitName}
-    </Text>
-  </View>
-);
 
 const M_style = StyleSheet.create({
   tab_st: {
