@@ -9,6 +9,7 @@ import Main from "./screen/Main";
 import Recipe from "./screen/Recipe";
 import Ingredient from "./screen/Ingredient";
 import Add_ingre from "./screen/Add_ingre";
+import Add_modify from "./screen/Add_modify";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ function App() {
         <Stack.Screen name="Recipe" component={Recipe} />
         <Stack.Screen name="Ingredient" component={Ingredient} />
         <Stack.Screen name="Add_ingre" component={Add_ingre} />
+        <Stack.Screen name="Add_modify" component={Add_modify} />
       </Stack.Navigator>
     </NavigationContainer>
   );

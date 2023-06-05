@@ -19,6 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 import axios from "axios";
 import { ImgPath } from "./Img";
+import { useIsFocused } from "@react-navigation/native";
 
 const Item = ({ item, ingre, onPress }) => (
   <View style={{ justifyContent: "center" }}>
@@ -60,6 +61,8 @@ const Item = ({ item, ingre, onPress }) => (
 );
 
 function Main({ route, navigation, onPress }) {
+  const IsFocused = useIsFocused();
+
   const nickname = route.params.nickname;
   const user_id = route.params.id;
   const [data, setData] = useState({});
@@ -73,7 +76,6 @@ function Main({ route, navigation, onPress }) {
       const response = await axios.get(
         `http://3.104.80.58:8080/api/v1/fridge/${user_id}`
       );
-      console.log(response.data);
       setData(response.data);
       const f_data = [...response.data, plus];
       setData(f_data);
@@ -85,7 +87,7 @@ function Main({ route, navigation, onPress }) {
   };
   useEffect(() => {
     load_ingredient();
-  }, []);
+  }, [IsFocused]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground source={Background} style={styles.background}>
@@ -141,18 +143,15 @@ function Main({ route, navigation, onPress }) {
             style={{ height: "80%", paddingBottom: 10 }}
             data={data}
             renderItem={({ item }) => (
-              console.log(item),
-              (
-                <Item
-                  item={item}
-                  ingre={item.ingredientName}
-                  onPress={() => {
-                    item.ingredientName === "직접추가"
-                      ? navigation.navigate("Ingredient", { nickname, user_id })
-                      : null;
-                  }}
-                />
-              )
+              <Item
+                item={item}
+                ingre={item.ingredientName}
+                onPress={() => {
+                  item.ingredientName === "직접추가"
+                    ? navigation.navigate("Ingredient", { nickname, user_id })
+                    : null;
+                }}
+              />
             )}
             keyExtractor={(item) => item.id}
             numColumns={3}

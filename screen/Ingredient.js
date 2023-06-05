@@ -36,7 +36,6 @@ function Ingredient({ route, navigation }) {
       const response = await axios.get(
         `http://3.104.80.58:8080/api/v1/ingredient`
       );
-      console.log(response.data);
       setData(response.data);
       const f_data = [...response.data, plus];
       setData(f_data);
@@ -93,7 +92,11 @@ function Ingredient({ route, navigation }) {
                 onPress={() => {
                   item.name === "직접추가"
                     ? navigation.navigate("Add_ingre", { nickname, user_id })
-                    : null;
+                    : navigation.navigate("Add_modify", {
+                        nickname,
+                        user_id,
+                        id: item.id,
+                      });
                 }}
               />
             )}

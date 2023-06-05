@@ -63,13 +63,10 @@ function Add_ingre({ route, navigation }) {
   };
   //정보 서버에 등록
   const add_info = async () => {
-    const form = new FormData();
     console.log(imgfile);
     imgfile.append("name", addname);
     imgfile.append("ingredient_unit_id", value);
-    // form.append("img", img);
 
-    console.log(imgfile);
     try {
       const response = await axios({
         method: "POST",
@@ -78,7 +75,6 @@ function Add_ingre({ route, navigation }) {
         data: imgfile,
       });
       console.log(response);
-      console.log(imgfile);
     } catch (error) {
       console.log(error);
       ToastAndroid.show("등록실패!", ToastAndroid.SHORT);
