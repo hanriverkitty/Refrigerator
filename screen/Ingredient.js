@@ -39,7 +39,7 @@ function Ingredient({ route, navigation }) {
       setData(response.data);
       const f_data = [...response.data, plus];
       setData(f_data);
-      //   console.log(f_data);
+      console.log(f_data);
     } catch (error) {
       console.log(error);
       ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
@@ -108,6 +108,7 @@ function Ingredient({ route, navigation }) {
                           user_id: user_id,
                           id: item.id,
                           img: item.img,
+                          ingre: item.name,
                         });
                   }}
                 />

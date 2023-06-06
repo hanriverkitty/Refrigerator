@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   TextInput,
   ToastAndroid,
-  KeyboardAvoidingView,
+  Modal,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,53 +20,32 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 
-function Add_modify({ route, navigation }) {
+function Main_modify({ route, navigation }) {
   const nickname = route.params.nickname;
   const user_id = route.params.user_id;
-  const img = route.params.img;
-  const id = route.params.id;
-  const ingre = route.params.ingre;
-  const [quantity, setQuantity] = useState();
-  const onChangeQuantity = (quantity) => setQuantity(quantity);
-  const onChangeDate = (date) => setDate(date);
-  const [date, setDate] = useState("");
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "실온", value: "실온" },
-    { label: "냉장", value: "냉장" },
-    { label: "냉동", value: "냉동" },
-  ]);
-  const [open1, setOpen1] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [items1, setItems1] = useState([
-    { label: "개", value: 1 },
-    { label: "근", value: 2 },
-    { label: "단", value: 3 },
-    { label: "알", value: 4 },
-  ]);
-  const post_ingre = async () => {
+  const onedata = route.params.onedata;
+  const id = onedata.id;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  console.log(onedata);
+  const delete_data = async () => {
+    console.log(id);
     try {
-      const response = await axios.post(
-        `http://3.104.80.58:8080/api/v1/fridge`,
-        {
-          userId: user_id,
-          ingredientId: id,
-          expirationDate: date,
-          quantity: parseInt(quantity),
-          location: value,
-        }
+      const response = await axios.delete(
+        `http://3.104.80.58:8080/api/v1/fridge/${id}`
       );
+      // console.log(expire);
       console.log(response.data);
+      setModalVisible(!modalVisible);
+      navigation.navigate({
+        name: "Main",
+        params: { nickname: nickname, user_id: user_id },
+        merge: true,
+      });
     } catch (error) {
       console.log(error);
-      ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
+      ToastAndroid.show("오류", ToastAndroid.SHORT);
     }
-    navigation.navigate({
-      name: "Main",
-      params: { nickname: nickname, user_id: user_id },
-      merge: true,
-    });
   };
 
   return (
@@ -94,13 +73,119 @@ function Add_modify({ route, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <View style={{ padding: 25, marginLeft: -10 }}>
+            <View
+              style={{
+                padding: 25,
+                marginLeft: -10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
               <FontAwesome
                 name="arrow-left"
                 size={40}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() =>
+                  navigation.navigate({
+                    name: "Main",
+                    params: { nickname: nickname, user_id: user_id },
+                    merge: true,
+                  })
+                }
               />
+              <View>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View
+                    style={{
+                      marginLeft: "15%",
+                      marginTop: "70%",
+                      width: "70%",
+                      height: "30%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "white",
+                      borderRadius: 10,
+                      elevation: 10,
+                    }}
+                  >
+                    <Image
+                      style={{ marginTop: "15%" }}
+                      source={require("../assets/png/아이콘/trash.png")}
+                    ></Image>
+                    <Text
+                      style={{
+                        padding: 20,
+                        fontSize: 30,
+                        textAlign: "center",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      해당 식품을{"\n"} 삭제하시겠습니까?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        height: "20%",
+                        marginTop: "5%",
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#3AC6AD",
+                          flex: 1,
+                          borderBottomLeftRadius: 10,
+                          justifyContent: "center",
+                        }}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            fontSize: 30,
+                            textAlign: "center",
+                          }}
+                        >
+                          취소
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#D9D9D9",
+                          flex: 1,
+                          justifyContent: "center",
+                        }}
+                        onPress={delete_data}
+                      >
+                        <Text
+                          style={{
+                            color: "#5E5E5E",
+                            fontWeight: "bold",
+                            fontSize: 30,
+                            textAlign: "center",
+                            borderBottomRightRadius: 10,
+                          }}
+                        >
+                          삭제
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Image
+                  source={require("../assets/png/아이콘/trash1.png")}
+                  style={{ width: 40, height: 40 }}
+                ></Image>
+              </TouchableOpacity>
             </View>
           </View>
           <View
@@ -121,7 +206,7 @@ function Add_modify({ route, navigation }) {
               }}
             >
               <Image
-                source={{ uri: img }}
+                source={{ uri: onedata.ingredientImg }}
                 style={{
                   alignSelf: "center",
                   height: "60%",
@@ -139,7 +224,7 @@ function Add_modify({ route, navigation }) {
                 marginTop: 20,
               }}
             >
-              {ingre}
+              {onedata.ingredientName}
             </Text>
           </View>
           <View
@@ -161,21 +246,27 @@ function Add_modify({ route, navigation }) {
               >
                 수량
               </Text>
-              <TextInput
+              <View
                 style={{
                   width: "70%",
                   backgroundColor: "white",
                   elevation: 7,
                   alignSelf: "center",
                   borderRadius: 10,
-                  textAlign: "center",
                   padding: 10,
                   marginTop: 10,
-                  fontSize: 20,
-                  fontWeight: "bold",
                 }}
-                onChangeText={onChangeQuantity}
-              ></TextInput>
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 25,
+                    textAlign: "center",
+                  }}
+                >
+                  {onedata.quantity}
+                </Text>
+              </View>
             </View>
             <View style={{ flex: 1 }}>
               <Text
@@ -189,45 +280,27 @@ function Add_modify({ route, navigation }) {
               >
                 단위
               </Text>
-              <DropDownPicker
-                open={open1}
-                value={value1}
-                items={items1}
-                setOpen={setOpen1}
-                setValue={setValue1}
-                setItems={setItems1}
-                placeholder="단위"
-                placeholderStyle={{
-                  color: "#999999",
-                  textAlign: "center",
-                  paddingLeft: 20,
-                }}
-                dropDownDirection="TOP"
+              <View
                 style={{
-                  backgroundColor: "white",
                   width: "70%",
-                  padding: 10,
-                  fontSize: 20,
-                  marginTop: 10,
+                  backgroundColor: "white",
                   elevation: 7,
                   alignSelf: "center",
                   borderRadius: 10,
-                  textAlign: "center",
-                  borderColor: "white",
+                  padding: 10,
+                  marginTop: 10,
                 }}
-                labelStyle={{
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-                textStyle={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-                dropDownContainerStyle={{
-                  borderColor: "black",
-                }}
-              ></DropDownPicker>
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {onedata.ingredientUnitName}
+                </Text>
+              </View>
             </View>
           </View>
           <View
@@ -248,45 +321,29 @@ function Add_modify({ route, navigation }) {
               >
                 보관위치
               </Text>
-              <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="선택"
-                placeholderStyle={{
-                  color: "#999999",
-                  textAlign: "center",
-                  paddingLeft: 30,
-                }}
-                dropDownDirection="BOTTOM"
+              <View
                 style={{
                   backgroundColor: "white",
                   width: "85%",
                   padding: 10,
-                  fontSize: 20,
                   marginTop: 10,
                   elevation: 7,
                   alignSelf: "center",
                   borderRadius: 10,
-                  textAlign: "center",
+
                   borderColor: "white",
                 }}
-                labelStyle={{
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-                textStyle={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-                dropDownContainerStyle={{
-                  borderColor: "black",
-                }}
-              ></DropDownPicker>
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {onedata.location}
+                </Text>
+              </View>
             </View>
             <View style={{ zIndex: -100 }}>
               <Text
@@ -300,9 +357,7 @@ function Add_modify({ route, navigation }) {
               >
                 소비기한
               </Text>
-              <TextInput
-                placeholder="소비기한"
-                placeholderTextColor={"#999999"}
+              <View
                 style={{
                   backgroundColor: "white",
                   width: "85%",
@@ -312,11 +367,18 @@ function Add_modify({ route, navigation }) {
                   elevation: 7,
                   alignSelf: "center",
                   borderRadius: 10,
-                  textAlign: "center",
-                  fontWeight: "bold",
                 }}
-                onChangeText={onChangeDate}
-              ></TextInput>
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {onedata.expirationDate}
+                </Text>
+              </View>
             </View>
           </View>
           <View
@@ -331,7 +393,6 @@ function Add_modify({ route, navigation }) {
                 elevation: 7,
                 justifyContent: "center",
               }}
-              onPress={post_ingre}
             >
               <Text
                 style={{
@@ -341,7 +402,7 @@ function Add_modify({ route, navigation }) {
                   color: "white",
                 }}
               >
-                추가하기
+                보관방법 확인하기
               </Text>
             </TouchableOpacity>
           </View>
@@ -351,7 +412,7 @@ function Add_modify({ route, navigation }) {
   );
 }
 
-export default Add_modify;
+export default Main_modify;
 const styles = StyleSheet.create({
   inputText_st: {
     selectionColor: "#6cc7a9",

@@ -286,6 +286,7 @@ function Main({ route, navigation, onPress }) {
                       width: "30%",
                       textAlign: "center",
                       height: "50%",
+                      fontWeight: "bold",
                     }}
                   >
                     {quantity}
@@ -443,6 +444,13 @@ function Main({ route, navigation, onPress }) {
                       height: "100%",
                       justifyContent: "center",
                     }}
+                    onPress={() =>
+                      navigation.navigate("Main_modify", {
+                        user_id,
+                        nickname,
+                        onedata: onedata,
+                      })
+                    }
                   >
                     <Text
                       style={{
