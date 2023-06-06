@@ -19,6 +19,7 @@ import * as NavigationBar from "expo-navigation-bar";
 
 function Recipe({ route, navigation }) {
   const nickname = route.params.nickname;
+  const user_id = route.params.user_id;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -90,7 +91,13 @@ function Recipe({ route, navigation }) {
                 style={M_style.tab_ele_st}
               ></Image>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Main", { nickname })}
+                onPress={() =>
+                  navigation.navigate({
+                    name: "Main",
+                    params: { nickname: nickname, user_id: user_id },
+                    merge: true,
+                  })
+                }
               >
                 <Image
                   source={require("../assets/png/아이콘/냉장고1.png")}
