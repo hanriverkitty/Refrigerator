@@ -79,7 +79,11 @@ function Add_ingre({ route, navigation }) {
       console.log(error);
       ToastAndroid.show("등록실패!", ToastAndroid.SHORT);
     }
-    navigation.navigate("Ingredient", { nickname, user_id });
+    navigation.navigate({
+      name: "Ingredient",
+      params: { nickname: nickname, user_id: user_id },
+      merge: true,
+    });
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -99,7 +103,11 @@ function Add_ingre({ route, navigation }) {
               size={40}
               color="white"
               onPress={() =>
-                navigation.navigate("Ingredient", { nickname, user_id })
+                navigation.navigate({
+                  name: "Ingredient",
+                  params: { nickname: nickname, user_id: user_id },
+                  merge: true,
+                })
               }
             />
           </View>

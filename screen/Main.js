@@ -62,9 +62,12 @@ const Item = ({ item, ingre, onPress }) => (
 
 function Main({ route, navigation, onPress }) {
   const IsFocused = useIsFocused();
+  // const [nickname, setNick] = useState(route.params.nickname);
+  // const [user_id, setUser] = useState(route.params.user_id);
 
   const nickname = route.params.nickname;
   const user_id = route.params.id;
+  console.log(nickname, user_id, "Main");
   const [data, setData] = useState({});
   const plus = {
     id: 999,
@@ -79,7 +82,7 @@ function Main({ route, navigation, onPress }) {
       setData(response.data);
       const f_data = [...response.data, plus];
       setData(f_data);
-      console.log(f_data);
+      // console.log(f_data);
     } catch (error) {
       console.log(error);
       ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);

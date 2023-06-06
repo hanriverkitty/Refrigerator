@@ -23,12 +23,12 @@ import DropDownPicker from "react-native-dropdown-picker";
 function Add_modify({ route, navigation }) {
   const nickname = route.params.nickname;
   const user_id = route.params.user_id;
+  const img = route.params.img;
   const id = route.params.id;
   const [quantity, setQuantity] = useState();
   const onChangeQuantity = (quantity) => setQuantity(quantity);
   const onChangeDate = (date) => setDate(date);
   const [date, setDate] = useState("");
-  const [data, setData] = useState({});
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -49,8 +49,8 @@ function Add_modify({ route, navigation }) {
       const response = await axios.post(
         `http://3.104.80.58:8080/api/v1/fridge`,
         {
-          userId: data.userId,
-          ingredientId: value1,
+          userId: user_id,
+          ingredientId: id,
           expirationDate: date,
           quantity: parseInt(quantity),
           location: value,
@@ -61,22 +61,13 @@ function Add_modify({ route, navigation }) {
       console.log(error);
       ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
     }
+    navigation.navigate({
+      name: "Main",
+      params: { nickname: nickname, user_id: user_id },
+      merge: true,
+    });
   };
-  const get_info = async () => {
-    try {
-      const response = await axios.get(
-        `http://3.104.80.58:8080/api/v1/fridge/ingredient/${id}`
-      );
-      console.log(response.data);
-      setData(response.data);
-    } catch (error) {
-      console.log(error);
-      ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
-    }
-  };
-  useEffect(() => {
-    get_info();
-  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -129,7 +120,7 @@ function Add_modify({ route, navigation }) {
               }}
             >
               <Image
-                source={{ uri: data.ingredientImg }}
+                source={{ uri: img }}
                 style={{
                   alignSelf: "center",
                   height: "60%",

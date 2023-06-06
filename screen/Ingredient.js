@@ -39,7 +39,7 @@ function Ingredient({ route, navigation }) {
       setData(response.data);
       const f_data = [...response.data, plus];
       setData(f_data);
-      console.log(f_data);
+      //   console.log(f_data);
     } catch (error) {
       console.log(error);
       ToastAndroid.show("불러올 수 없음", ToastAndroid.SHORT);
@@ -49,67 +49,80 @@ function Ingredient({ route, navigation }) {
     load_ingredient();
   }, [IsFocused]);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        source={Background}
-        style={{
-          flex: 1,
-          resizeMode: "stretch",
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height,
-        }}
-      >
-        <View style={{ padding: 25, marginLeft: -10 }}>
-          <FontAwesome
-            name="arrow-left"
-            size={40}
-            color="white"
-            onPress={() => navigation.navigate("Main", { nickname, user_id })}
-          />
-        </View>
-        <View style={{ alignItems: "center", marginTop: 15, flex: 2 }}>
-          <TextInput
-            placeholder="검색"
-            style={{
-              width: "85%",
-              backgroundColor: "white",
-              fontSize: 20,
-              height: "80%",
-              borderRadius: 5,
-              padding: 10,
-              paddingLeft: 15,
-            }}
-          ></TextInput>
-        </View>
-        <View style={{ flex: 20, width: "100%", paddingTop: 30 }}>
-          <FlatList
-            style={{ height: "80%", paddingBottom: 10 }}
-            data={data}
-            renderItem={({ item }) => (
-              <Item
-                item={item}
-                name={item.name}
-                onPress={() => {
-                  item.name === "직접추가"
-                    ? navigation.navigate("Add_ingre", { nickname, user_id })
-                    : navigation.navigate("Add_modify", {
-                        nickname,
-                        user_id,
-                        id: item.id,
-                      });
-                }}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            numColumns={3}
-            columnWrapperStyle={{
-              justifyContent: "space-evenly",
-              marginBottom: 30,
-            }}
-          />
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+    console.log(nickname, user_id, "Ingre"),
+    (
+      <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground
+          source={Background}
+          style={{
+            flex: 1,
+            resizeMode: "stretch",
+            width: Dimensions.get("window").width,
+            height: Dimensions.get("window").height,
+          }}
+        >
+          <View style={{ padding: 25, marginLeft: -10 }}>
+            <FontAwesome
+              name="arrow-left"
+              size={40}
+              color="white"
+              onPress={() =>
+                navigation.navigate({
+                  name: "Main",
+                  params: { nickname: nickname, user_id: user_id },
+                  merge: true,
+                })
+              }
+            />
+          </View>
+          <View style={{ alignItems: "center", marginTop: 15, flex: 2 }}>
+            <TextInput
+              placeholder="검색"
+              style={{
+                width: "85%",
+                backgroundColor: "white",
+                fontSize: 20,
+                height: "80%",
+                borderRadius: 5,
+                padding: 10,
+                paddingLeft: 15,
+              }}
+            ></TextInput>
+          </View>
+          <View style={{ flex: 20, width: "100%", paddingTop: 30 }}>
+            <FlatList
+              style={{ height: "80%", paddingBottom: 10 }}
+              data={data}
+              renderItem={({ item }) => (
+                <Item
+                  item={item}
+                  name={item.name}
+                  onPress={() => {
+                    item.name === "직접추가"
+                      ? navigation.navigate("Add_ingre", {
+                          nickname: nickname,
+                          user_id: user_id,
+                        })
+                      : navigation.navigate("Add_modify", {
+                          nickname: nickname,
+                          user_id: user_id,
+                          id: item.id,
+                          img: item.img,
+                        });
+                  }}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+              numColumns={3}
+              columnWrapperStyle={{
+                justifyContent: "space-evenly",
+                marginBottom: 30,
+              }}
+            />
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+    )
   );
 }
 
