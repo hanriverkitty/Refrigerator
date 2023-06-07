@@ -27,6 +27,7 @@ function App() {
         <Stack.Screen name="Add_ingre" component={Add_ingre} />
         <Stack.Screen name="Add_modify" component={Add_modify} />
         <Stack.Screen name="Main_modify" component={Main_modify} />
+        asdads
       </Stack.Navigator>
     </NavigationContainer>
   );
