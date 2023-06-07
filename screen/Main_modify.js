@@ -376,7 +376,7 @@ function Main_modify({ route, navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  {onedata.expirationDate}
+                  {onedata.expirationDate.split("T", 1)}
                 </Text>
               </View>
             </View>

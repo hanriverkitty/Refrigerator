@@ -426,7 +426,7 @@ function Main({ route, navigation, onPress }) {
                     }}
                     onChangeText={onChangeDate}
                   >
-                    {expire}
+                    {expire.split("T", 1)}
                   </TextInput>
                 </View>
                 <View
