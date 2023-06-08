@@ -11,6 +11,14 @@ import Ingredient from "./screen/Ingredient";
 import Add_ingre from "./screen/Add_ingre";
 import Add_modify from "./screen/Add_modify";
 import Main_modify from "./screen/Main_modify";
+import CommunityScreen from "./screen/CommunityScreen.js";
+import NotificationScreen from "./screen/NotificationScreen.js";
+import PostingScreen from "./screen/PostingScreen.js";
+import PostReadingScreen from "./screen/PostReadingScreen.js";
+import PostRewritingScreen from "./screen/PostRewritingScreen.js";
+import ProfileSettingScreen from "./screen/ProfileSettingScreen.js";
+import RecipeScreen from "./screen/RecipeScreen.js";
+import UserUserInfoScreen from "./screen/UserInfoScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +35,14 @@ function App() {
         <Stack.Screen name="Add_ingre" component={Add_ingre} />
         <Stack.Screen name="Add_modify" component={Add_modify} />
         <Stack.Screen name="Main_modify" component={Main_modify} />
+        <Stack.Screen name="Community" component={CommunityScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen name="Posting" component={PostingScreen} />
+        <Stack.Screen name="PostReading" component={PostReadingScreen} />
+        <Stack.Screen name="PostRewriting" component={PostRewritingScreen} />
+        <Stack.Screen name="ProfileSetting" component={ProfileSettingScreen} />
+        <Stack.Screen name="Recipe" component={RecipeScreen} />
+        <Stack.Screen name="UserInfo" component={UserUserInfoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
