@@ -209,7 +209,11 @@ function Main({ route, navigation, onPress }) {
             <TouchableOpacity>
               <FontAwesome name="search" size={24} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Notification", { user_id, nickname })
+              }
+            >
               <Fontisto name="bell" size={24} color="white" />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -505,10 +509,16 @@ function Main({ route, navigation, onPress }) {
                     source={require("../assets/png/아이콘/냉장고2.png")}
                     style={M_style.tab_ele_st}
                   ></Image>
-                  <Image
-                    source={require("../assets/png/아이콘/커뮤니티1.png")}
-                    style={M_style.tab_ele_st}
-                  ></Image>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("Community", { nickname, user_id })
+                    }
+                  >
+                    <Image
+                      source={require("../assets/png/아이콘/커뮤니티1.png")}
+                      style={M_style.tab_ele_st}
+                    ></Image>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}

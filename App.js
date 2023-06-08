@@ -30,7 +30,6 @@ function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Main" component={Main} />
-        <Stack.Screen name="Recipe" component={Recipe} />
         <Stack.Screen name="Ingredient" component={Ingredient} />
         <Stack.Screen name="Add_ingre" component={Add_ingre} />
         <Stack.Screen name="Add_modify" component={Add_modify} />

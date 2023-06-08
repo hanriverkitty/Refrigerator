@@ -80,7 +80,9 @@ function Recipe({ route, navigation }) {
                 ></Image>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Notification")}
+                onPress={() =>
+                  navigation.navigate("Notification", { nickname, user_id })
+                }
               >
                 <Image
                   style={headerStyles.headerButton}

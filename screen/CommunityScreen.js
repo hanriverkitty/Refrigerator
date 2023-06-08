@@ -187,7 +187,11 @@ function CommunityScreen({ route, navigation }) {
             </TouchableOpacity>
           </View>
           <View style={headerStyles.lowerRightHeader}>
-            <TouchableOpacity onPress={() => navigation.navigate("Posting")}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Posting", { nickname, user_id })
+              }
+            >
               <Image style={headerStyles.headerButton} source={plusImg}></Image>
             </TouchableOpacity>
           </View>
